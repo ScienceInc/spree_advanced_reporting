@@ -36,7 +36,7 @@ module Spree
       params[:search][:completed_at_not_null] = true
       params[:search][:state_not_eq] = 'canceled'
 
-      search = Order.search(params[:search])
+      search = Order.search(params[:search]).includes(:line_items)
       # self.orders = search.state_does_not_equal('canceled')
       self.orders = search.result
 
