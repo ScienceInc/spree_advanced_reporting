@@ -126,5 +126,10 @@ module Spree
     def order_count(order)
       self.product_in_taxon ? 1 : 0
     end
+
+    def tax(order)
+      tax = order.adjustments.where(:originator_type => "Spree::TaxRate").inject(0) { |sum, adj| sum += adj.amount }
+      self.product_in_taxon ? tax : 0
+    end
   end
 end

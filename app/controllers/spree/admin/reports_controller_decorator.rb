@@ -94,6 +94,11 @@ Spree::Admin::ReportsController.class_eval do
     base_report_render("profit")
   end
 
+  def tax
+    @report = Spree::AdvancedReport::IncrementReport::Tax.new(params)
+    base_report_render("tax")
+  end
+
   def top_products
     @report = Spree::AdvancedReport::TopReport::TopProducts.new(params, 4)
     base_report_top_render("top_products")
