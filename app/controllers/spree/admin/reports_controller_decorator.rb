@@ -39,6 +39,15 @@ Spree::Admin::ReportsController.class_eval do
     end
   end
 
+  def all_report_render(filename)
+    respond_to do |format|
+      format.html { render :template => "spree/admin/reports/all_base" }
+      format.csv do
+        send_data @report.ruportdata.to_csv
+      end
+    end
+  end
+
   def base_report_top_render(filename)
     respond_to do |format|
       format.html { render :template => "spree/admin/reports/top_base" }
@@ -97,6 +106,11 @@ Spree::Admin::ReportsController.class_eval do
   def tax
     @report = Spree::AdvancedReport::IncrementReport::Tax.new(params)
     base_report_render("tax")
+  end
+
+  def store_credits
+    @report = Spree::AdvancedReport::AllReport::StoreCredits.new(params)
+    all_report_render("store_credits")
   end
 
   def top_products

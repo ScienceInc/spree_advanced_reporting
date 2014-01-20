@@ -21,6 +21,9 @@
   match '/admin/reports/tax' => 'admin/reports#tax',  :via => [:get, :post],
                                                       :as  => 'tax_admin_reports'
 
+  match '/admin/reports/store_credits' => 'admin/reports#store_credits',  :via => [:get, :post],
+                                                      :as  => 'store_credits_admin_reports'
+
   match '/admin/reports/top_customers' => 'admin/reports#top_customers',  :via  => [:get, :post],
                                                                           :as   => 'top_customers_admin_reports'
 
