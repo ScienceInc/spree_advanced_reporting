@@ -8,6 +8,7 @@ class Spree::AdvancedReport::AllReport::StoreCredits < Spree::AdvancedReport::Al
   end
 
   def initialize(params)
+    params[:includes] = :store_credits
     super(params)
 
     self.ruportdata = Table(%w[id email name remaining\ amount])
