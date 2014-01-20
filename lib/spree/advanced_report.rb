@@ -11,13 +11,14 @@ module Spree
       "Base Advanced Report"
     end
 
-    def initialize(params)
-      self.params = params
-      self.data = {}
-      self.ruportdata = {}
-      self.unfiltered_params = params[:search].blank? ? {} : params[:search].clone
+    def default_date_range_to_yesterday(params)
+      if params[:search][:completed_at_gt].blank? && params[:search][:completed_at_lt].blank?
+        params[:search][:completed_at_lt] = Time.now.yesterday.beginning_of_day
+        params[:search][:completed_at_gt] = Time.now.end_of_day
+      end
+    end
 
-      params[:search] ||= {}
+    def default_date_range_to_match_all_orders(params)
       if params[:search][:completed_at_gt].blank?
         if (Order.count > 0) && Order.minimum(:completed_at)
           params[:search][:completed_at_gt] = Order.minimum(:completed_at).beginning_of_day
@@ -32,6 +33,18 @@ module Spree
       else
         params[:search][:completed_at_lt] = Time.zone.parse(params[:search][:completed_at_lt]).end_of_day rescue ""
       end
+    end
+
+    def initialize(params)
+      self.params = params
+      self.data = {}
+      self.ruportdata = {}
+      self.unfiltered_params = params[:search].blank? ? {} : params[:search].clone
+
+      params[:search] ||= {}
+
+      default_date_range_to_yesterday(params)
+      # default_date_range_to_match_all_orders(params)
 
       params[:search][:completed_at_not_null] = true
       params[:search][:state_not_eq] = 'canceled'
