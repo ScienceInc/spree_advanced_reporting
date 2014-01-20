@@ -113,6 +113,11 @@ Spree::Admin::ReportsController.class_eval do
     all_report_render("store_credits")
   end
 
+  def noncanceled_users
+    @report = Spree::AdvancedReport::AllReport::NoncanceledUsers.new(params)
+    all_report_render("noncanceled_users")
+  end
+
   def top_products
     @report = Spree::AdvancedReport::TopReport::TopProducts.new(params, 4)
     base_report_top_render("top_products")

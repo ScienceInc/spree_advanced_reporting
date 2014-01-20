@@ -24,6 +24,9 @@
   match '/admin/reports/store_credits' => 'admin/reports#store_credits',  :via => [:get, :post],
                                                       :as  => 'store_credits_admin_reports'
 
+  match '/admin/reports/noncanceled_users' => 'admin/reports#noncanceled_users',  :via => [:get, :post],
+                                                      :as  => 'noncanceled_users_admin_reports'
+
   match '/admin/reports/top_customers' => 'admin/reports#top_customers',  :via  => [:get, :post],
                                                                           :as   => 'top_customers_admin_reports'
 
