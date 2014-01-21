@@ -11,7 +11,7 @@ class Spree::AdvancedReport::AllReport::NoncanceledUsers < Spree::AdvancedReport
     super(params)
 
     self.ruportdata = Table(%w[id email name])
-    subscriptions = Spree::Subscription::Braintree::UserSubscription.noncancelled.includes(:user)
+    subscriptions = Spree::Subscription::Braintree::UserSubscription.noncanceled.includes(:user)
     seen = {}
     subscriptions.each do |subscription|
       if subscription.user && !seen[subscription.user.id]
