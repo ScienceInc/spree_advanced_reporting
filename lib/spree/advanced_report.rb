@@ -1,7 +1,7 @@
 module Spree
   class AdvancedReport
     include Ruport
-    attr_accessor :orders, :product_text, :date_text, :taxon_text, :ruportdata, :data, :params, :taxon, :product, :product_in_taxon, :unfiltered_params
+    attr_accessor :orders, :product_text, :date_text, :taxon_text, :ruportdata, :data, :params, :taxon, :product, :product_in_taxon
 
     def name
       "Base Advanced Report"
@@ -12,39 +12,37 @@ module Spree
     end
 
     def default_date_range_to_yesterday(params)
-      if params[:search][:completed_at_gt].blank? && params[:search][:completed_at_lt].blank?
-        params[:search][:completed_at_lt] = Time.now.yesterday.beginning_of_day
-        params[:search][:completed_at_gt] = Time.now.end_of_day
-      end
+      return unless params[:search][:completed_at_gt].blank? && params[:search][:completed_at_lt].blank?
+      params[:search][:completed_at_gt] = Time.now.yesterday
+      params[:search][:completed_at_lt] = Time.now
     end
 
     def default_date_range_to_match_all_orders(params)
-      if params[:search][:completed_at_gt].blank?
-        if (Order.count > 0) && Order.minimum(:completed_at)
-          params[:search][:completed_at_gt] = Order.minimum(:completed_at).beginning_of_day
-        end
-      else
-        params[:search][:completed_at_gt] = Time.zone.parse(params[:search][:completed_at_gt]).beginning_of_day rescue ""
-      end
-      if params[:search][:completed_at_lt].blank?
-        if (Order.count > 0) && Order.maximum(:completed_at)
-          params[:search][:completed_at_lt] = Order.maximum(:completed_at).end_of_day
-        end
-      else
-        params[:search][:completed_at_lt] = Time.zone.parse(params[:search][:completed_at_lt]).end_of_day rescue ""
-      end
+      return unless Order.count > 0
+      params[:search][:completed_at_gt] = Order.minimum(:completed_at) if params[:search][:completed_at_gt].blank?
+      params[:search][:completed_at_lt] = Order.maximum(:completed_at) if params[:search][:completed_at_lt].blank?
+    end
+
+    def set_date_text(params)
+      gt = Time.zone.parse(params[:search][:completed_at_gt].to_s).beginning_of_day
+      lt = Time.zone.parse(params[:search][:completed_at_lt].to_s).end_of_day
+      self.date_text = "Date Range:"
+      self.date_text = "#{self.date_text} From #{gt} to #{lt}" if !gt.blank? && !lt.blank?
+      self.date_text = "#{self.date_text} After #{gt}"         if !gt.blank? && lt.blank?
+      self.date_text = "#{self.date_text} Before #{lt}"        if gt.blank?  && !lt.blank?
+      self.date_text = "#{self.date_text} All"                 if gt.blank?  && lt.blank?
     end
 
     def initialize(params)
       self.params = params
       self.data = {}
       self.ruportdata = {}
-      self.unfiltered_params = params[:search].blank? ? {} : params[:search].clone
 
       params[:search] ||= {}
 
       default_date_range_to_yesterday(params)
-      # default_date_range_to_match_all_orders(params)
+      # default_date_range_to_match_all_orders(params)      
+      set_date_text(params)
 
       params[:search][:completed_at_not_null] = true
       params[:search][:state_not_eq] = 'canceled'
@@ -73,21 +71,7 @@ module Spree
         self.taxon_text = "Taxon: #{self.taxon.name}<br />"
       end
 
-      # Above searchlogic date settings
-      self.date_text = "Date Range:"
-      if self.unfiltered_params
-        if self.unfiltered_params[:completed_at_gt] != '' && self.unfiltered_params[:completed_at_lt] != ''
-          self.date_text += " From #{self.unfiltered_params[:completed_at_gt]} to #{self.unfiltered_params[:completed_at_lt]}"
-        elsif self.unfiltered_params[:completed_at_gt] != ''
-          self.date_text += " After #{self.unfiltered_params[:completed_at_gt]}"
-        elsif self.unfiltered_params[:completed_at_lt] != ''
-          self.date_text += " Before #{self.unfiltered_params[:completed_at_lt]}"
-        else
-          self.date_text += " All"
-        end
-      else
-        self.date_text += " All"
-      end
+
     end
 
     def download_url(base, format, report_type = nil)
