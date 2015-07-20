@@ -1,6 +1,6 @@
 Spree::Admin::ReportsController.class_eval do
   # Be sure to add any new report here!
-  REPORT_ACTIONS = [:profit, :revenue, :units, :tax, :top_products, :top_customers, :geo_revenue, :geo_units, :count, :noncanceled_users, :store_credits]
+  REPORT_ACTIONS = [:profit, :revenue, :units, :tax, :top_products, :top_customers, :geo_revenue, :geo_units, :count, :noncanceled_users, :store_credits, :consultants, :consultant_orders, :social_emails]
 
   before_filter :add_own 
   before_filter :basic_report_setup, :actions => REPORT_ACTIONS
@@ -113,6 +113,21 @@ Spree::Admin::ReportsController.class_eval do
   def store_credits
     @report = Spree::AdvancedReport::AllReport::StoreCredits.new(params)
     all_report_render("store_credits")
+  end
+
+  def consultants
+    @report = Spree::AdvancedReport::AllReport::Consultants.new(params)
+    all_report_render("consultants")
+  end
+
+  def consultant_orders
+    @report = Spree::AdvancedReport::AllReport::ConsultantOrders.new(params)
+    all_report_render("consultant_orders")
+  end
+
+  def social_emails
+    @report = Spree::AdvancedReport::AllReport::SocialEmails.new(params)
+    all_report_render("social_emails")
   end
 
   def noncanceled_users

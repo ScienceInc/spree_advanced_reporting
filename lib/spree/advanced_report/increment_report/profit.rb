@@ -17,10 +17,10 @@ class Spree::AdvancedReport::IncrementReport::Profit < Spree::AdvancedReport::In
     self.orders.each do |order|
       date = {}
       INCREMENTS.each do |type|
-        date[type] = get_bucket(type, order.completed_at)
+        date[type] = get_bucket(type, order.number)
         data[type][date[type]] ||= {
           :value => 0, 
-          :display => get_display(type, order.completed_at),
+          :display => get_display(type, order.number),
         }
       end
       profit = profit(order)

@@ -27,6 +27,15 @@
   match '/admin/reports/noncanceled_users' => 'admin/reports#noncanceled_users',  :via => [:get, :post],
                                                       :as  => 'noncanceled_users_admin_reports'
 
+  match '/admin/reports/consultants' => 'admin/reports#consultants',  :via => [:get, :post],
+                                                      :as  => 'consultants_admin_reports'
+
+  match '/admin/reports/consultant_orders' => 'admin/reports#consultant_orders',  :via => [:get, :post],
+                                                      :as  => 'consultant_orders_admin_reports'
+
+  match '/admin/reports/social_emails' => 'admin/reports#social_emails',  :via => [:get, :post],
+                                                      :as  => 'social_emails_admin_reports'
+
   match '/admin/reports/top_customers' => 'admin/reports#top_customers',  :via  => [:get, :post],
                                                                           :as   => 'top_customers_admin_reports'
 
