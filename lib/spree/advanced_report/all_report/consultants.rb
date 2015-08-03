@@ -10,7 +10,7 @@ class Spree::AdvancedReport::AllReport::Consultants < Spree::AdvancedReport::All
   def initialize(params)
     super(params)
 
-    self.ruportdata = Table(%w[id email first\ name second\ name join\ date signup\ number])
+    self.ruportdata = Table(%w[id email first\ name last\ name join\ date signup\ number])
     customers = Spree::User.where("positive_opt_in IS NOT NULL").order("positive_opt_in desc")
     customers.each do |customer|
         ruportdata << {
@@ -18,7 +18,7 @@ class Spree::AdvancedReport::AllReport::Consultants < Spree::AdvancedReport::All
           "email" => customer.email,
           "first name" => customer.first_name,
           "last name" => customer.last_name,
-          "consultant date" => customer.positive_opt_in,
+          "join date" => customer.positive_opt_in,
           "signup number" => customer.consultant_signup_number
         }
     end
