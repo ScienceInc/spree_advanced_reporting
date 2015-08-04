@@ -18,7 +18,7 @@ class Spree::AdvancedReport::AllReport::Consultants < Spree::AdvancedReport::All
           "email" => customer.email,
           "first name" => customer.first_name,
           "last name" => customer.last_name,
-          "permalink" => "https://www.prizecandle.com/#{customer.permalink}"
+          "permalink" => "https://www.prizecandle.com/#{customer.permalink}",
           "join date" => customer.positive_opt_in,
           "signup number" => customer.consultant_signup_number
         }
