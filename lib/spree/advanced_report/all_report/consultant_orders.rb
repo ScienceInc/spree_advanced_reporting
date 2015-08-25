@@ -10,7 +10,7 @@ class Spree::AdvancedReport::AllReport::ConsultantOrders < Spree::AdvancedReport
   def initialize(params)
     super(params)
 
-    self.ruportdata = Table(%w[number email name consultant\ first consultant\ second total item\ total])
+    self.ruportdata = Table(%w[number email name consultant\ first consultant\ second total item\ total completed])
     orders = Spree::Order.where("consultant_first_id IS NOT NULL or consultant_second_id IS NOT NULL").order("completed_at desc")
     orders.each do |order|
         ruportdata << {
@@ -20,7 +20,8 @@ class Spree::AdvancedReport::AllReport::ConsultantOrders < Spree::AdvancedReport
           "consultant first" => order.consultant_first_id,
           "consultant second" => order.consultant_second_id,
           "total" => order.total,
-          "item total" => order.item_total
+          "item total" => order.item_total,
+          "completed" => order.completed_at
         }
     end
   end
