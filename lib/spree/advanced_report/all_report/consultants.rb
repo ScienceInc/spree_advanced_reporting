@@ -11,7 +11,7 @@ class Spree::AdvancedReport::AllReport::Consultants < Spree::AdvancedReport::All
     super(params)
 
     self.ruportdata = Table(%w[id email first\ name last\ name phone permalink join\ date signup\ number kit])
-    customers = Spree::User.where("positive_opt_in IS NOT NULL").order("positive_opt_in desc")
+    customers = Spree::User.where("positive_opt_in IS NOT NULL").includes(:orders).order("positive_opt_in desc")
     customers.each do |customer|
         ruportdata << {
           "id" => customer.id,

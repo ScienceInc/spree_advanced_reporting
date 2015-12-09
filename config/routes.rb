@@ -39,6 +39,9 @@
   match '/admin/reports/top_customers' => 'admin/reports#top_customers',  :via  => [:get, :post],
                                                                           :as   => 'top_customers_admin_reports'
 
+  match '/admin/reports/top_consultants' => 'admin/reports#top_consultants',  :via  => [:get, :post],
+                                                                          :as   => 'top_consultants_admin_reports'
+
   match '/admin/reports/top_products' => 'admin/reports#top_products',  :via  => [:get, :post],
                                                                         :as   =>  'top_products_admin_reports'
 
