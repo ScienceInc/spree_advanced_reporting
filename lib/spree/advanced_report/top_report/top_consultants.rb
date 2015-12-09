@@ -11,7 +11,7 @@ class Spree::AdvancedReport::TopReport::TopConsultants < Spree::AdvancedReport::
     super(params)
 
     orders.each do |order|
-      if order.user
+      if order.consultant_first_id.present?
         data[order.consultant_first_id] ||= {
           :email => order.consultant_first.email,
           :commissionable => 0,
