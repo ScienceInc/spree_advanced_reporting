@@ -30,7 +30,6 @@
 </div>
 
 <% content_for :head do -%>
-<%= javascript_include_tag 'admin/jquery.tablesorter.min.js' %>
 <%= stylesheet_link_tag 'admin/advanced_reporting' %>
 <script type="text/javascript">
 $(function() {
@@ -40,16 +39,6 @@ $(function() {
     var id = 'div#' + $(this).attr('id') + '_data';
     $('div.advanced_reporting_data').not($(id)).hide();
     $(id).show(); 
-  });
-  $('table.tablesorter').tablesorter();
-  $('table.tablesorter').bind("sortEnd", function() {
-    var section = $(this).parent().attr('id');
-    var even = true;
-    $.each($('div#' + section + ' table tr'), function(i, j) {
-      $(j).removeClass('even').removeClass('odd');
-      $(j).addClass(even ? 'even' : 'odd');
-      even = !even;
-    });
   });
   if($('input#product_id').length > 0) {
     $('select#advanced_reporting_product_id').val($('input#product_id').val());
