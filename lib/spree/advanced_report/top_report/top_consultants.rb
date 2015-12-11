@@ -19,7 +19,7 @@ class Spree::AdvancedReport::TopReport::TopConsultants < Spree::AdvancedReport::
           :units => 0
         }
         data[order.consultant_first_id][:commissionable] += order.commissionable_total
-        data[order.consultant_first_id][:revenue] += revenue(order)
+        data[order.consultant_first_id][:revenue] += order.total
         data[order.consultant_first_id][:units] += units(order)
       end
     end
@@ -29,6 +29,7 @@ class Spree::AdvancedReport::TopReport::TopConsultants < Spree::AdvancedReport::
       ruportdata << { "email" => data[k][:email], "Units" => data[k][:units], "Revenue" => data[k][:revenue], "Commissionable" => data[k][:commissionable] } 
     end
     ruportdata.replace_column("Revenue") { |r| "$%0.2f" % r.Revenue }
-    ruportdata.rename_column("email", "Customer Email")
+    ruportdata.rename_column("email", "Consultant Email")
+    ruportdata.rename_column("Revenue", "Total")
   end
 end
